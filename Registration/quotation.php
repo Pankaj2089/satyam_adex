@@ -9,7 +9,7 @@ if ($quotationId && !$existingQuotation) {
   echo '<script>window.location="'.LINK_PATH.'quotation.html"</script>'; die;
 }
 $quotationDate = $existingQuotation['quotation_date'] ?? date('Y-m-d');
-$quotationNumber = $existingQuotation['quotation_no'] ?? 'Q-'.date('Ymd-His');
+$quotationNumber = $existingQuotation['quotation_no'] ?? quotationNextNumber($conn, 'ADEX', $quotationDate);
 $quotationItems = $existingQuotation['items'] ?? [];
 ?>
 <div class="main-panel">

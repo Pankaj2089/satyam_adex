@@ -1,5 +1,20 @@
 <?php
 
+function quotationNextNumber(PDO $conn, $prefix, $date = null)
+{
+    $date = $date ? new DateTime($date) : new DateTime();
+    $year = (int) $date->format('Y');
+    $month = (int) $date->format('n');
+    $startYear = $month >= 4 ? $year : $year - 1;
+    $financialYear = substr((string) $startYear, -2).'-'.substr((string) ($startYear + 1), -2);
+    $pattern = '/^'.preg_quote($prefix, '/').' #: \/'.preg_quote($financialYear, '/').'\/(\d+)$/';
+    $highestNumber = 100;
+    foreach ($conn->query('SELECT quotation_no FROM quotations') as $row) {
+        if (preg_match($pattern, (string) $row['quotation_no'], $matches)) $highestNumber = max($highestNumber, (int) $matches[1]);
+    }
+    return $prefix.' #: /'.$financialYear.'/'.($highestNumber + 1);
+}
+
 function quotationParseSize($size)
 {
     $parts = preg_split('/\s*[xX×*]\s*/u', trim($size));
