@@ -1,0 +1,9 @@
+Options +FollowSymlinks
+
+RewriteEngine on
+
+
+RewriteRule ^export-component-type-data.html$ export_component_type_data.php [L]
+RewriteRule ^export-user-type-data.html$ export_user_type_data.php [L]
+
+RewriteRule ^(.*).html$ index.php [L]
